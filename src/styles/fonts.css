@@ -1,0 +1,37 @@
+@font-face {
+    font-family: 'Boxing'; /* Give your font a unique name */
+    src: url('../fonts/BOXING.ttf') format('truetype'); /* Adjust the path to your font file */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Excon'; /* Give your font a unique name */
+    src: url('../fonts/Excon-Regular.ttf') format('truetype'); /* Adjust the path to your font file */
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Excon'; /* Give your font a unique name */
+    src: url('../fonts/Excon-Bold.ttf') format('truetype'); /* Adjust the path to your font file */
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Excon'; /* Give your font a unique name */
+    src: url('../fonts/Excon-Thin.ttf') format('truetype'); /* Adjust the path to your font file */
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Excon'; /* Give your font a unique name */
+    src: url('../fonts/Excon-Medium.ttf') format('truetype'); /* Adjust the path to your font file */
+    font-weight: 100;
+    font-style: 500;
+}
+
+
+  
