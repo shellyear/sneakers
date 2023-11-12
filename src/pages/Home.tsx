@@ -42,8 +42,10 @@ const HeaderRight = styled(Box)`
 const Title = styled(Typography)(() => ({
   marginBottom: "18px",
   [theme.breakpoints.up("md")]: {
-    fontSize: theme.typography.h1.fontSize,
     marginBottom: 0,
+  },
+  [theme.breakpoints.up("lg")]: {
+    fontSize: theme.typography.h1.fontSize,
   },
 }));
 
@@ -53,9 +55,7 @@ export const Home = () => {
   return (
     <Container theme={theme} maxWidth="xl">
       <Header>
-        <Title variant="h2" gutterBottom>
-          Your collection
-        </Title>
+        <Title variant="h2">Your collection</Title>
         <HeaderRight>
           <Box flex={1}>
             <CustomOutlinedInput type="search" placeholder="Search" />
