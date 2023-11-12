@@ -11,69 +11,89 @@ const colors = {
   blue: "#20A9F3",
 };
 
+const breakpoints = {
+  values: {
+    xs: 0,
+    sm: 600,
+    md: 900,
+    lg: 1200,
+    xl: 1536,
+  },
+};
+
 export const theme = createTheme({
   palette: {
     primary: {
       main: colors.black,
-      light: colors.blackShadow
+      light: colors.blackShadow,
     },
     secondary: {
       main: colors.gray,
-      dark: colors.darkGray
+      dark: colors.darkGray,
     },
     error: {
-      main: colors.red
+      main: colors.red,
     },
     common: {
-      white: colors.white
+      white: colors.white,
     },
     action: {
       active: colors.black,
-      hover: colors.blackShadow,
-      focus: colors.blue
+      hover: colors.gray,
+      focus: colors.blue,
     },
     text: {
-      primary: colors.black
+      primary: colors.black,
     },
     background: {
       default: colors.lightGray,
-    }
+    },
   },
   typography: {
     h1: {
-      fontFamily: 'Boxing, sans-serif, serif',
+      fontFamily: "Arial, sans-serif, serif",
       fontSize: 64,
-      fontWeight: 400
+      fontWeight: 900,
     },
     h2: {
-      fontFamily: 'Boxing, sans-serif, serif',
+      fontFamily: "Arial, sans-serif, serif",
       fontSize: 36,
-      fontWeight: 400
+      fontWeight: 900,
     },
     h3: {
-      fontFamily: 'Excon, sans-serif, serif',
+      fontFamily: "Arial, sans-serif, serif",
       fontSize: 24,
-      fontWeight: 700
+      fontWeight: 900,
     },
     subtitle1: {
-      fontFamily: 'Excon, sans-serif, serif',
+      fontFamily: "Excon, sans-serif, serif",
       fontSize: 16,
-      fontWeight: 700
+      fontWeight: 700,
     },
     button: {
-      fontFamily: 'Excon, sans-serif, serif',
+      fontFamily: "Excon, sans-serif, serif",
       fontSize: 16,
-      fontWeight: 500
+      fontWeight: 500,
     },
     body1: {
-      fontFamily: 'Excon, sans-serif, serif',
+      fontFamily: "Excon, sans-serif, serif",
       fontSize: 16,
-      fontWeight: 400
+      fontWeight: 400,
     },
     body2: {
-      fontFamily: 'Excon, sans-serif, serif',
+      fontFamily: "Excon, sans-serif, serif",
       fontSize: 14,
-      fontWeight: 400
-    }
+      fontWeight: 400,
+    },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
+    },
+  },
+  breakpoints,
 });
