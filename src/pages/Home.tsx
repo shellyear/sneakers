@@ -6,11 +6,11 @@ import {
   useMediaQuery,
   styled,
 } from "@mui/material";
-import { theme } from "../styles/theme";
+import { theme } from "../static/styles/theme";
 
 import { SearchBar } from "../components/SearchBar";
 import { ReactComponent as PlusIcon } from "../images/plus.svg";
-import { ButtonWithIcon } from "../components/ButtonWithIcon";
+import { ButtonWithIcon } from "../components/custom/ButtonWithIcon";
 import { NoSneakerNotice } from "../components/NoSneakerNotice";
 import { AddSneakersModal } from "../components/AddSneakersModal";
 import { useModal } from "../hooks";
@@ -66,7 +66,7 @@ export const Home = () => {
           {isMd && (
             <Box flex={1}>
               <ButtonWithIcon
-                icon={<PlusIcon />}
+                startIcon={<PlusIcon />}
                 text="Add new sneakers"
                 onClick={handleOpen}
               />
@@ -78,7 +78,7 @@ export const Home = () => {
       {!isMd && (
         <Box mt={24.5}>
           <ButtonWithIcon
-            icon={<PlusIcon />}
+            startIcon={<PlusIcon />}
             text="Add new sneakers"
             onClick={handleOpen}
           />

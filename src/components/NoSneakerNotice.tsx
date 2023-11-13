@@ -1,7 +1,7 @@
 import { Box, Typography, styled, useMediaQuery } from "@mui/material";
 import { ReactComponent as SneakersWithTextSvg } from "../images/stonks.svg";
 import { ReactComponent as SneakersWithoutTextSvg } from "../images/girlSneakerWithoutText.svg";
-import { theme } from "../styles/theme";
+import { theme } from "../static/styles/theme";
 
 const ImgBox = styled(Box)`
   margin-left: auto;
@@ -19,7 +19,11 @@ export const NoSneakerNotice = () => {
   return (
     <div>
       <ImgBox mt={15}>
-        {isMd ? <SneakersWithoutTextSvg width="100%" /> : <SneakersWithTextSvg width="100%" />}
+        {isMd ? (
+          <SneakersWithoutTextSvg width="100%" />
+        ) : (
+          <SneakersWithTextSvg width="100%" />
+        )}
       </ImgBox>
       {isMd && (
         <Text mt={6} variant="body1" as="div">

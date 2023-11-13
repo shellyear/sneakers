@@ -4,9 +4,9 @@ import Modal from "@mui/material/Modal";
 import { ReactComponent as CloseIcon } from "../images/close.svg";
 import { OutlinedInputCustom } from "./custom/OutlinedInputCustom";
 import { FormEvent } from "react";
-import { ButtonWithIcon } from "./ButtonWithIcon";
+import { ButtonWithIcon } from "./custom/ButtonWithIcon";
 import { ReactComponent as PlusIcon } from "../images/plus.svg";
-import { theme } from "../styles/theme";
+import { theme } from "../static/styles/theme";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   boxSizing: "border-box",
@@ -37,6 +37,7 @@ const Label = styled(InputLabel)(({ theme }) => ({
 
 const Header = styled("div")`
   display: flex;
+  justify-content: space-between;
   gap: 5px;
 `;
 
@@ -106,7 +107,7 @@ export const AddSneakersModal = ({
         <Box mt={6} component="form" onSubmit={onSubmit}>
           <Inputs />
           <Box mt={11}>
-            <ButtonWithIcon icon={<PlusIcon />} text="Add new sneakers" />
+            <ButtonWithIcon startIcon={<PlusIcon />} text="Add new sneakers" />
           </Box>
         </Box>
       </ModalContainer>

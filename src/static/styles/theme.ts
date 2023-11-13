@@ -48,6 +48,7 @@ export const theme = createTheme({
     background: {
       default: colors.lightGray,
     },
+    divider: colors.gray
   },
   typography: {
     h1: {
@@ -63,7 +64,7 @@ export const theme = createTheme({
     h3: {
       fontFamily: "Arial, sans-serif, serif",
       fontSize: 24,
-      fontWeight: 900,
+      fontWeight: 700,
     },
     subtitle1: {
       fontFamily: "Excon, sans-serif, serif",

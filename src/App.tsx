@@ -1,4 +1,4 @@
-import { theme } from "./styles/theme";
+import { theme } from "./static/styles/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { Home } from "./pages/Home";
 
