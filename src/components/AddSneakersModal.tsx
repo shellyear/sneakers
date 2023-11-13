@@ -1,12 +1,36 @@
 import { Box, styled, Typography, InputLabel, Rating } from "@mui/material";
 
 import Modal from "@mui/material/Modal";
-import { ReactComponent as CloseIcon } from "../images/close.svg";
+import { ReactComponent as CloseIcon } from "../static/images/close.svg";
 import { OutlinedInputCustom } from "./custom/OutlinedInputCustom";
-import { FormEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { ButtonWithIcon } from "./custom/ButtonWithIcon";
-import { ReactComponent as PlusIcon } from "../images/plus.svg";
+import { ReactComponent as PlusIcon } from "../static/images/plus.svg";
 import { theme } from "../static/styles/theme";
+import { useMutation } from "@tanstack/react-query";
+import { sneakerApi } from "../api";
+import { Sneaker } from "../types";
+
+type AddSneakersModalProps = {
+  open: boolean;
+  handleClose: () => void;
+};
+
+type FormData = {
+  name: string;
+  brand: string;
+  price: string;
+  year: string;
+  size: string;
+};
+
+type InputGroupProps = {
+  id: string;
+  name: string;
+  type?: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+};
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   boxSizing: "border-box",
@@ -41,19 +65,21 @@ const Header = styled("div")`
   gap: 5px;
 `;
 
-type AddSneakersModalProps = {
-  open: boolean;
-  handleClose: () => void;
-};
+const isValidData = (data: FormData): boolean =>
+  Object.values(data).every((value) => value !== "");
+
+const inputItems = [
+  { id: "name", name: "Name" },
+  { id: "brand", name: "Brand" },
+  { id: "price", name: "Price", type: "number" },
+  { id: "size", name: "Size US", type: "number" },
+  { id: "year", name: "Year", type: "number" },
+];
 
 const RatingGroup = () => (
   <Box mt={3}>
     <Label>Rate</Label>
     <Rating
-      // value={value}
-      // onChange={(event, newValue) => {
-      //   setValue(newValue);
-      // }}
       sx={{
         "& .MuiRating-icon": {
           color: theme.palette.primary.main,
@@ -63,51 +89,116 @@ const RatingGroup = () => (
   </Box>
 );
 
-const InputGroup = ({ id, name }: { id: string; name: string }) => (
+const InputGroup = ({
+  id,
+  name,
+  type = "text",
+  value,
+  onChange,
+}: InputGroupProps) => (
   <Box mt={3}>
     <Label htmlFor={id} variant="standard">
       {name}
     </Label>
-    <OutlinedInputCustom id={id} fullWidth />
+    <OutlinedInputCustom
+      id={id}
+      name={id}
+      value={value}
+      type={type}
+      onChange={onChange}
+      required
+      fullWidth
+    />
   </Box>
 );
 
-const Inputs = () => {
+const Inputs = ({
+  onChange,
+  data,
+}: {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  data: FormData;
+}) => {
   return (
     <>
-      <InputGroup id="name" name="Name" />
-      <InputGroup id="brand" name="Brand" />
-      <InputGroup id="price" name="Price" />
-      <InputGroup id="size-us" name="Size us" />
-      <InputGroup id="year" name="Year" />
+      {inputItems.map((input) => (
+        <InputGroup
+          id={input.id}
+          key={input.id}
+          name={input.name}
+          type={input.type}
+          onChange={onChange}
+          value={data && data[input.id as keyof Sneaker]}
+        />
+      ))}
       <RatingGroup />
     </>
   );
+};
+
+const initialFormState = {
+  name: "",
+  brand: "",
+  price: "",
+  size: "",
+  year: "",
 };
 
 export const AddSneakersModal = ({
   open,
   handleClose,
 }: AddSneakersModalProps) => {
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const [formData, setFormData] = useState<FormData>(initialFormState);
+
+  const { mutate: addSneakers } = useMutation({
+    mutationKey: ["/add-snikers"],
+    mutationFn: (data: Partial<Sneaker>) => sneakerApi.addSneaker(data),
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const onClose = () => {
+    setFormData(initialFormState);
+    handleClose();
+  };
+
+  const onSubmit = () => {
+    if (isValidData(formData)) {
+      addSneakers({
+        ...formData,
+        price: formData.price ? Number(formData.price) : undefined,
+        size: formData.size ? Number(formData.size) : undefined,
+        year: formData.size ? Number(formData.year) : undefined,
+      });
+    }
+    handleClose();
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onClose={onClose}>
       <ModalContainer>
         <Header>
           <Typography variant="h2" component="h2">
             Add sneakers to your collection
           </Typography>
-          <Box width={24} height={24} onClick={handleClose}>
+          <Box width={24} height={24} onClick={onClose}>
             <CloseIcon />
           </Box>
         </Header>
-        <Box mt={6} component="form" onSubmit={onSubmit}>
-          <Inputs />
+        <Box mt={6} component="form">
+          <Inputs onChange={handleChange} data={formData} />
           <Box mt={11}>
-            <ButtonWithIcon startIcon={<PlusIcon />} text="Add new sneakers" />
+            <ButtonWithIcon
+              startIcon={<PlusIcon />}
+              onClick={onSubmit}
+              text="Add new sneakers"
+            />
           </Box>
         </Box>
       </ModalContainer>

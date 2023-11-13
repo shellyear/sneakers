@@ -9,11 +9,17 @@ import {
 import { theme } from "../static/styles/theme";
 
 import { SearchBar } from "../components/SearchBar";
-import { ReactComponent as PlusIcon } from "../images/plus.svg";
+import { ReactComponent as PlusIcon } from "../static/images/plus.svg";
 import { ButtonWithIcon } from "../components/custom/ButtonWithIcon";
 import { NoSneakerNotice } from "../components/NoSneakerNotice";
 import { AddSneakersModal } from "../components/AddSneakersModal";
 import { useModal } from "../hooks";
+import { Filters, FiltersEnum, useSneakerFilters } from "../components/Filters";
+import { Slider } from "../components/Slider";
+import { sneakerApi } from "../api";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { SneakerData } from "../types";
 
 const Container = styled(BaseContainer)<{ theme: Theme }>(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -53,12 +59,38 @@ const Title = styled(Typography)(() => ({
 
 export const Home = () => {
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
+  const { filter, sortByPrice, sortBySize, sortByYear, onFilterClick } =
+    useSneakerFilters();
   const { open, handleOpen, handleClose } = useModal();
+  const [sortedData, setSortedData] = useState<Partial<SneakerData[]>>();
+  const { data } = useQuery({
+    queryKey: ["/sneakers"],
+    queryFn: () => sneakerApi.getSneakers(),
+    enabled: filter === FiltersEnum.ALL,
+  });
+
+  const snickersExist = data && data.length > 0;
+
+  useEffect(() => {
+    if (data) {
+      if (filter === FiltersEnum.NEW) setSortedData(sortByYear(data));
+      if (filter === FiltersEnum.CHEAPEST) setSortedData(sortByPrice(data));
+      if (filter === FiltersEnum.SMALLEST) setSortedData(sortBySize(data));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter, data]);
 
   return (
     <Container theme={theme} maxWidth="xl">
       <Header>
         <Title variant="h2">Your collection</Title>
+        {snickersExist && !isMd && (
+          <Box mb={2}>
+            <Slider>
+              <Filters onClick={onFilterClick} />
+            </Slider>
+          </Box>
+        )}
         <HeaderRight>
           <Box flex={1}>
             <SearchBar />
@@ -74,7 +106,7 @@ export const Home = () => {
           )}
         </HeaderRight>
       </Header>
-      <NoSneakerNotice />
+      {!snickersExist && <NoSneakerNotice />}
       {!isMd && (
         <Box mt={24.5}>
           <ButtonWithIcon

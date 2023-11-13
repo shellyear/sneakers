@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { ReactComponent as TrashSvg } from "../images/trash.svg";
-import { Sneaker } from "../types/card";
+import { Sneaker } from "../types";
 
 type FeatureProps = {
   name: string;

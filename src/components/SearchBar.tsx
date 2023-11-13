@@ -1,6 +1,5 @@
-import React from "react";
 import { InputAdornment } from "@mui/material";
-import { ReactComponent as SearchIcon } from "../images/search.svg";
+import { ReactComponent as SearchIcon } from "../static/images/search.svg";
 import { OutlinedInputCustom } from "./custom/OutlinedInputCustom";
 
 export const SearchBar = () => {
