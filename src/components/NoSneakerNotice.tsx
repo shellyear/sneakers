@@ -4,10 +4,6 @@ import { ReactComponent as SneakersWithoutTextSvg } from "../images/girlSneakerW
 import { theme } from "../styles/theme";
 
 const ImgBox = styled(Box)`
-  height: 100%;
-  width: 100%;
-  max-width: 868px;
-  max-height: 500px;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -23,10 +19,10 @@ export const NoSneakerNotice = () => {
   return (
     <div>
       <ImgBox mt={15}>
-        {isMd ? <SneakersWithoutTextSvg /> : <SneakersWithTextSvg />}
+        {isMd ? <SneakersWithoutTextSvg width="100%" /> : <SneakersWithTextSvg width="100%" />}
       </ImgBox>
       {isMd && (
-        <Text mt={6} variant="body1">
+        <Text mt={6} variant="body1" as="div">
           <pre>
             {
               "Seem’s like you still didn’t add\n any new sneaker to your collection"

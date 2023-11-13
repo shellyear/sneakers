@@ -8,20 +8,22 @@ import {
 } from "@mui/material";
 import { theme } from "../styles/theme";
 
-import { CustomOutlinedInput } from "../components/CustomOutlinedInput";
+import { SearchBar } from "../components/SearchBar";
 import { ReactComponent as PlusIcon } from "../images/plus.svg";
 import { ButtonWithIcon } from "../components/ButtonWithIcon";
 import { NoSneakerNotice } from "../components/NoSneakerNotice";
+import { AddSneakersModal } from "../components/AddSneakersModal";
+import { useModal } from "../hooks";
 
 const Container = styled(BaseContainer)<{ theme: Theme }>(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   minHeight: "100vh",
   padding: "84px 22px 56px 22px",
   [theme.breakpoints.up("md")]: {
-    padding: "56px 50px", // padding for medium and larger screens
+    padding: "56px 50px", // padding for medium screens
   },
   [theme.breakpoints.up("lg")]: {
-    padding: "56px 100px", // padding for medium and larger screens
+    padding: "56px 100px", // padding for larger screens
   },
 }));
 
@@ -51,6 +53,7 @@ const Title = styled(Typography)(() => ({
 
 export const Home = () => {
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
+  const { open, handleOpen, handleClose } = useModal();
 
   return (
     <Container theme={theme} maxWidth="xl">
@@ -58,11 +61,15 @@ export const Home = () => {
         <Title variant="h2">Your collection</Title>
         <HeaderRight>
           <Box flex={1}>
-            <CustomOutlinedInput type="search" placeholder="Search" />
+            <SearchBar />
           </Box>
           {isMd && (
             <Box flex={1}>
-              <ButtonWithIcon icon={<PlusIcon />} text="Add new sneakers" />
+              <ButtonWithIcon
+                icon={<PlusIcon />}
+                text="Add new sneakers"
+                onClick={handleOpen}
+              />
             </Box>
           )}
         </HeaderRight>
@@ -70,9 +77,14 @@ export const Home = () => {
       <NoSneakerNotice />
       {!isMd && (
         <Box mt={24.5}>
-          <ButtonWithIcon icon={<PlusIcon />} text="Add new sneakers" />
+          <ButtonWithIcon
+            icon={<PlusIcon />}
+            text="Add new sneakers"
+            onClick={handleOpen}
+          />
         </Box>
       )}
+      <AddSneakersModal open={open} handleClose={handleClose} />
     </Container>
   );
 };
