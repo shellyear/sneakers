@@ -11,6 +11,14 @@ const colors = {
   blue: "#20A9F3",
 };
 
+type Colors = keyof typeof colors;
+
+type CustomColors = Record<Colors, string>;
+
+declare module "@mui/material/styles/createPalette" {
+  interface CommonColors extends CustomColors {}
+}
+
 const breakpoints = {
   values: {
     xs: 0,
@@ -35,7 +43,7 @@ export const theme = createTheme({
       main: colors.red,
     },
     common: {
-      white: colors.white,
+      ...colors,
     },
     action: {
       active: colors.black,
@@ -48,7 +56,7 @@ export const theme = createTheme({
     background: {
       default: colors.lightGray,
     },
-    divider: colors.gray
+    divider: colors.gray,
   },
   typography: {
     h1: {
@@ -80,6 +88,7 @@ export const theme = createTheme({
       fontFamily: "Excon, sans-serif, serif",
       fontSize: 16,
       fontWeight: 400,
+      lineHeight: 1.5,
     },
     body2: {
       fontFamily: "Excon, sans-serif, serif",

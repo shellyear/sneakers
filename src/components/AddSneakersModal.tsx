@@ -14,6 +14,7 @@ import { Sneaker } from "../types";
 type AddSneakersModalProps = {
   open: boolean;
   handleClose: () => void;
+  refetch: Function;
 };
 
 type FormData = {
@@ -147,6 +148,7 @@ const initialFormState = {
 export const AddSneakersModal = ({
   open,
   handleClose,
+  refetch,
 }: AddSneakersModalProps) => {
   const [formData, setFormData] = useState<FormData>(initialFormState);
 
@@ -176,8 +178,9 @@ export const AddSneakersModal = ({
         size: formData.size ? Number(formData.size) : undefined,
         year: formData.size ? Number(formData.year) : undefined,
       });
+      refetch();
+      setFormData(initialFormState);
     }
-    handleClose();
   };
 
   return (

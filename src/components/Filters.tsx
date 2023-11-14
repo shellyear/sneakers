@@ -7,6 +7,7 @@ import { ToggleButtonWithIcon } from "./custom/ToggleButtonWithIcon";
 import { SneakerData } from "../types";
 
 type FilterProps = {
+  active: FiltersEnum;
   onClick: (e: React.MouseEvent<HTMLElement>, value: any) => void;
 };
 
@@ -20,14 +21,14 @@ export enum FiltersEnum {
 export const useSneakerFilters = () => {
   const [filter, setFilter] = useState<FiltersEnum>(FiltersEnum.ALL);
 
-  const sortByYear = (data: SneakerData[]) =>
+  const newestFirst = (data: SneakerData[]) =>
     data.slice().sort((a, b) => b.year - a.year);
 
-  const sortByPrice = (data: SneakerData[]) =>
-    data.slice().sort((a, b) => b.price - a.price);
+  const cheapestFirst = (data: SneakerData[]) =>
+    data.slice().sort((a, b) => a.price - b.price);
 
-  const sortBySize = (data: SneakerData[]) =>
-    data.slice().sort((a, b) => b.size - a.size);
+  const smallestFirst = (data: SneakerData[]) =>
+    data.slice().sort((a, b) => a.size - b.size);
 
   const onFilterClick = (e: React.MouseEvent<HTMLElement>, value: string) => {
     setFilter(value as FiltersEnum);
@@ -36,14 +37,14 @@ export const useSneakerFilters = () => {
   return {
     filter,
     setFilter,
-    sortByYear,
-    sortByPrice,
-    sortBySize,
+    newestFirst,
+    cheapestFirst,
+    smallestFirst,
     onFilterClick,
   };
 };
 
-export const Filters = ({ onClick }: FilterProps) => {
+export const Filters = ({ onClick, active }: FilterProps) => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -52,18 +53,21 @@ export const Filters = ({ onClick }: FilterProps) => {
       {isMd && <Typography variant="body2">Sort by:</Typography>}
       <Box display="flex" gap={1}>
         <ToggleButtonWithIcon
+          active={active === FiltersEnum.NEW}
           value={FiltersEnum.NEW}
           text="Newest"
           icon={<CalendarSvg />}
           onClick={onClick}
         />
         <ToggleButtonWithIcon
+          active={active === FiltersEnum.SMALLEST}
           value={FiltersEnum.SMALLEST}
           text="Smallest Size"
           icon={<PriceSvg />}
           onClick={onClick}
         />
         <ToggleButtonWithIcon
+          active={active === FiltersEnum.CHEAPEST}
           value={FiltersEnum.CHEAPEST}
           text="Lowest Price"
           icon={<SizeSvg />}

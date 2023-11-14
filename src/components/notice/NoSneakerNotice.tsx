@@ -1,7 +1,7 @@
 import { Box, Typography, styled, useMediaQuery } from "@mui/material";
-import { ReactComponent as SneakersWithTextSvg } from "../static/images/stonks.svg";
-import { ReactComponent as SneakersWithoutTextSvg } from "../static/images/girlSneakerWithoutText.svg";
-import { theme } from "../static/styles/theme";
+import { ReactComponent as SneakersWithTextSvg } from "../../static/images/stonks.svg";
+import { ReactComponent as SneakersWithoutTextSvg } from "../../static/images/girlSneakerWithoutText.svg";
+import { theme } from "../../static/styles/theme";
 
 const ImgBox = styled(Box)`
   margin-left: auto;

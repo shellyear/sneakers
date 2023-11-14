@@ -8,8 +8,10 @@ import {
   styled,
   useTheme,
 } from "@mui/material";
-import { ReactComponent as TrashSvg } from "../images/trash.svg";
-import { Sneaker } from "../types";
+import { ReactComponent as TrashSvg } from "../static/images/trash.svg";
+import { SneakerData } from "../types";
+import { useMutation } from "@tanstack/react-query";
+import { sneakerApi } from "../api";
 
 type FeatureProps = {
   name: string;
@@ -41,8 +43,21 @@ const Feature = ({ name, value, isPrice }: FeatureProps) => (
   </Box>
 );
 
-export const SneakerCard = ({ name, brand, price, size, year }: Sneaker) => {
+export const SneakerCard = ({
+  _id,
+  name,
+  brand,
+  price,
+  size,
+  year,
+}: SneakerData) => {
   const theme = useTheme();
+
+  const { mutate: deleteSneaker } = useMutation({
+    mutationKey: ["/delete-sneaker"],
+    mutationFn: (id: string) => sneakerApi.deleteSneaker(id),
+  });
+
   return (
     <Card>
       <CardContent>
@@ -64,7 +79,7 @@ export const SneakerCard = ({ name, brand, price, size, year }: Sneaker) => {
               }}
             />
           </Box>
-          <Box>
+          <Box onClick={() => deleteSneaker(_id)}>
             <TrashSvg />
           </Box>
         </ContentHeader>
