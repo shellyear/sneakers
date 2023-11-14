@@ -31,7 +31,11 @@ export const useSneakerFilters = () => {
     data.slice().sort((a, b) => a.size - b.size);
 
   const onFilterClick = (e: React.MouseEvent<HTMLElement>, value: string) => {
-    setFilter(value as FiltersEnum);
+    if (filter === value) {
+      setFilter(FiltersEnum.ALL);
+    } else {
+      setFilter(value as FiltersEnum);
+    }
   };
 
   return {

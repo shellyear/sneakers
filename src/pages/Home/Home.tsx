@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { SneakerData } from "../../types";
 import { Content } from "./Content";
 import { Controls } from "./Controls";
+import { RefetchContext } from "../../context";
 
 const Container = styled(BaseContainer)<{ theme: Theme }>(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -69,10 +70,9 @@ const Home = () => {
   const { open, closeModal, openModal } = useModal();
   const [sortedSneakers, setSortedSneakers] = useState<SneakerData[]>();
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["get-sneakers"],
     queryFn: () => sneakerApi.getSneakers(),
-    enabled: filter === FiltersEnum.ALL,
   });
 
   const sneakersExist = data && data.length > 0;
@@ -90,47 +90,47 @@ const Home = () => {
   }, [filter, data]);
 
   return (
-    <Container theme={theme} maxWidth="xl">
-      <Header>
-        <Title variant="h2">Your collection</Title>
-        {sneakersExist && !isMd && (
-          <Box mb={2}>
-            <Slider>
-              <Filters active={filter} onClick={onFilterClick} />
-            </Slider>
-          </Box>
-        )}
-        <HeaderRight>
-          <Box flex={1}>
-            <SearchBar />
-          </Box>
-          {isMd && (
-            <Box flex={1}>
-              <ButtonWithIcon
-                startIcon={<PlusIcon />}
-                text="Add new sneakers"
-                onClick={openModal}
-              />
+    <RefetchContext.Provider value={{ refetch }}>
+      <Container theme={theme} maxWidth="xl">
+        <Header>
+          <Title variant="h2">Your collection</Title>
+          {sneakersExist && !isMd && (
+            <Box mb={2}>
+              <Slider>
+                <Filters active={filter} onClick={onFilterClick} />
+              </Slider>
             </Box>
           )}
-        </HeaderRight>
-      </Header>
-      {sneakersExist && isMd && (
-        <Box mt={6} display="flex" justifyContent="end">
-          <Filters active={filter} onClick={onFilterClick} />
-        </Box>
-      )}
-      <Content
-        isMd={isMd}
-        hasSneakers={sneakersExist}
-        sortedSneakers={sortedSneakers}
-      />
-      <Controls openModal={openModal} sneakersExist={sneakersExist} />
-      <AddSneakersModal
-        open={open}
-        handleClose={closeModal}
-      />
-    </Container>
+          <HeaderRight>
+            <Box flex={1}>
+              <SearchBar />
+            </Box>
+            {isMd && (
+              <Box flex={1}>
+                <ButtonWithIcon
+                  height={48}
+                  startIcon={<PlusIcon />}
+                  text="Add new sneakers"
+                  onClick={openModal}
+                />
+              </Box>
+            )}
+          </HeaderRight>
+        </Header>
+        {sneakersExist && isMd && (
+          <Box mt={6} display="flex" justifyContent="end">
+            <Filters active={filter} onClick={onFilterClick} />
+          </Box>
+        )}
+        <Content
+          isMd={isMd}
+          hasSneakers={sneakersExist}
+          sortedSneakers={sortedSneakers}
+        />
+        <Controls openModal={openModal} sneakersExist={sneakersExist} />
+        <AddSneakersModal open={open} handleClose={closeModal} />
+      </Container>
+    </RefetchContext.Provider>
   );
 };
 

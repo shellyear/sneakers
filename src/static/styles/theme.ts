@@ -83,6 +83,7 @@ export const theme = createTheme({
       fontFamily: "Excon, sans-serif, serif",
       fontSize: 16,
       fontWeight: 500,
+      textTransform: 'none'
     },
     body1: {
       fontFamily: "Excon, sans-serif, serif",

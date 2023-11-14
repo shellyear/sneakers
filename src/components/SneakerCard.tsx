@@ -12,6 +12,11 @@ import { ReactComponent as TrashSvg } from "../static/images/trash.svg";
 import { SneakerData } from "../types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sneakerApi } from "../api";
+import React from "react";
+
+interface SneakerCardProps extends SneakerData {
+  onClick: (data: SneakerData) => void;
+}
 
 type FeatureProps = {
   name: string;
@@ -43,34 +48,34 @@ const Feature = ({ name, value, isPrice }: FeatureProps) => (
   </Box>
 );
 
-export const SneakerCard = ({
-  _id,
-  name,
-  brand,
-  price,
-  size,
-  year,
-}: SneakerData) => {
+export const SneakerCard = ({ onClick, ...data }: SneakerCardProps) => {
   const theme = useTheme();
   const queryClient = useQueryClient();
+
   const { mutate: deleteSneaker } = useMutation({
     mutationKey: ["/delete-sneaker"],
     mutationFn: (id: string) => sneakerApi.deleteSneaker(id),
     onSuccess: () => {
+      // refetch when needed
       queryClient.invalidateQueries({ queryKey: ["get-sneakers"] });
     },
   });
 
+  const onDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    deleteSneaker(data._id);
+  };
+
   return (
-    <Card>
+    <Card onClick={() => onClick(data)}>
       <CardContent>
         <ContentHeader>
           <Box>
             <Typography variant="h3" component="h1">
-              {name}
+              {data.name}
             </Typography>
             <Typography variant="body1" component="div">
-              {brand}
+              {data.brand}
             </Typography>
             <Rating
               sx={{
@@ -82,8 +87,8 @@ export const SneakerCard = ({
               }}
             />
           </Box>
-          <Box onClick={() => deleteSneaker(_id)}>
-            <TrashSvg />
+          <Box>
+            <TrashSvg onClick={onDelete}/>
           </Box>
         </ContentHeader>
         <Grid
@@ -94,21 +99,21 @@ export const SneakerCard = ({
           width="100%"
         >
           <Grid item xs={4}>
-            <Feature name="Year" value={year} />
+            <Feature name="Year" value={data.year} />
           </Grid>
           <Grid
             item
             xs={4}
             sx={{ borderLeft: `1px solid ${theme.palette.divider}` }}
           >
-            <Feature name="Size US" value={size} />
+            <Feature name="Size US" value={data.size} />
           </Grid>
           <Grid
             item
             xs={4}
             sx={{ borderLeft: `1px solid ${theme.palette.divider}` }}
           >
-            <Feature name="Price" value={price} isPrice />
+            <Feature name="Price" value={data.price} isPrice />
           </Grid>
         </Grid>
       </CardContent>

@@ -3,7 +3,7 @@ import { Sneaker, SneakerData } from "../types";
 
 export const BASE_URL =
   process.env.API_URL ||
-  "https://crudcrud.com/api/1db7fc4e725349f3bd520e067bfd9455";
+  "https://crudcrud.com/api/fd76a775fcc64c2581a50c1133ac053c";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -21,7 +21,8 @@ export const addSneaker = (payload: Partial<Sneaker>) => {
 };
 
 export const updateSneaker = (payload: Partial<SneakerData>) => {
-  return api.put(`/sneakers/${payload._id}`, payload);
+  const { _id, ...data } = payload;
+  return api.put(`/sneakers/${payload._id}`, data);
 };
 
 export const deleteSneaker = (id: string) => {
