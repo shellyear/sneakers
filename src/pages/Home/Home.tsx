@@ -11,7 +11,7 @@ import { theme } from "../../static/styles/theme";
 import { SearchBar } from "../../components/SearchBar";
 import { ReactComponent as PlusIcon } from "../../static/images/plus.svg";
 import { ButtonWithIcon } from "../../components/custom/ButtonWithIcon";
-import { AddSneakersModal } from "../../components/AddSneakersModal";
+import { AddSneakersModal } from "../../components/modals/AddSneakersModal";
 import { useModal } from "../../hooks";
 import {
   Filters,
@@ -69,8 +69,8 @@ const Home = () => {
   const { open, closeModal, openModal } = useModal();
   const [sortedSneakers, setSortedSneakers] = useState<SneakerData[]>();
 
-  const { data, refetch } = useQuery({
-    queryKey: ["/sneakers-data"],
+  const { data } = useQuery({
+    queryKey: ["get-sneakers"],
     queryFn: () => sneakerApi.getSneakers(),
     enabled: filter === FiltersEnum.ALL,
   });
@@ -88,7 +88,7 @@ const Home = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, data]);
-  console.log({ filter, sortedSneakers });
+
   return (
     <Container theme={theme} maxWidth="xl">
       <Header>
@@ -129,7 +129,6 @@ const Home = () => {
       <AddSneakersModal
         open={open}
         handleClose={closeModal}
-        refetch={refetch}
       />
     </Container>
   );

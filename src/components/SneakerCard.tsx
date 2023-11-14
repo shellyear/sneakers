@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { ReactComponent as TrashSvg } from "../static/images/trash.svg";
 import { SneakerData } from "../types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sneakerApi } from "../api";
 
 type FeatureProps = {
@@ -52,10 +52,13 @@ export const SneakerCard = ({
   year,
 }: SneakerData) => {
   const theme = useTheme();
-
+  const queryClient = useQueryClient();
   const { mutate: deleteSneaker } = useMutation({
     mutationKey: ["/delete-sneaker"],
     mutationFn: (id: string) => sneakerApi.deleteSneaker(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-sneakers"] });
+    },
   });
 
   return (

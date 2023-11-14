@@ -14,7 +14,7 @@ interface ToggleButtonWithIconProps extends ToggleButtonProps {
 }
 
 const ToggleButton = styled(ToggleButtonMui)<{
-  active?: boolean;
+  active: number;
 }>`
   ${({ theme }) => theme.typography.button}
   border-radius: 12px;
@@ -52,7 +52,7 @@ export const ToggleButtonWithIcon = ({
   onClick,
 }: ToggleButtonWithIconProps) => {
   return (
-    <ToggleButton size="small" active={active} value={value} onClick={onClick}>
+    <ToggleButton size="small" active={active ? 1: 0} value={value} onClick={onClick}>
       {icon}
       {text}
     </ToggleButton>

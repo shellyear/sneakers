@@ -19,9 +19,7 @@ export const SneakersGrid = ({ items }: SneakersGridProps) => {
   return (
     <Grid>
       {items.map((item) => (
-        <Box>
-          <SneakerCard {...item} />
-        </Box>
+        <SneakerCard key={item._id} {...item} />
       ))}
     </Grid>
   );

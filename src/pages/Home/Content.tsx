@@ -17,7 +17,7 @@ export const Content = ({ hasSneakers, sortedSneakers, isMd }: ContentProps) => 
 
   if (sortedSneakersExist) {
     return (
-      <Box mt={isMd ? 2 : 3}>
+      <Box mt={isMd ? 2 : 3} mb={isMd ? 2 : 8}>
         <SneakersGrid items={sortedSneakers} />
       </Box>
     );

@@ -2,19 +2,19 @@ import { Box, styled, Typography, InputLabel, Rating } from "@mui/material";
 
 import Modal from "@mui/material/Modal";
 import { ReactComponent as CloseIcon } from "../static/images/close.svg";
-import { OutlinedInputCustom } from "./custom/OutlinedInputCustom";
+import { OutlinedInputCustom } from "../custom/OutlinedInputCustom";
 import { ChangeEvent, useState } from "react";
-import { ButtonWithIcon } from "./custom/ButtonWithIcon";
+import { ButtonWithIcon } from "../custom/ButtonWithIcon";
 import { ReactComponent as PlusIcon } from "../static/images/plus.svg";
-import { theme } from "../static/styles/theme";
-import { useMutation } from "@tanstack/react-query";
-import { sneakerApi } from "../api";
-import { Sneaker } from "../types";
+import { theme } from "../../static/styles/theme";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { sneakerApi } from "../../api";
+import { Sneaker } from "../../types";
 
 type AddSneakersModalProps = {
   open: boolean;
   handleClose: () => void;
-  refetch: Function;
+  initialFormState?: FormData;
 };
 
 type FormData = {
@@ -90,7 +90,7 @@ const RatingGroup = () => (
   </Box>
 );
 
-const InputGroup = ({
+const FormGroup = ({
   id,
   name,
   type = "text",
@@ -113,7 +113,7 @@ const InputGroup = ({
   </Box>
 );
 
-const Inputs = ({
+const FormInputs = ({
   onChange,
   data,
 }: {
@@ -123,7 +123,7 @@ const Inputs = ({
   return (
     <>
       {inputItems.map((input) => (
-        <InputGroup
+        <FormGroup
           id={input.id}
           key={input.id}
           name={input.name}
@@ -137,7 +137,7 @@ const Inputs = ({
   );
 };
 
-const initialFormState = {
+const initialFormData = {
   name: "",
   brand: "",
   price: "",
@@ -148,13 +148,17 @@ const initialFormState = {
 export const AddSneakersModal = ({
   open,
   handleClose,
-  refetch,
+  initialFormState = initialFormData,
 }: AddSneakersModalProps) => {
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState<FormData>(initialFormState);
 
   const { mutate: addSneakers } = useMutation({
     mutationKey: ["/add-snikers"],
     mutationFn: (data: Partial<Sneaker>) => sneakerApi.addSneaker(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-sneakers"] });
+    },
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -178,7 +182,6 @@ export const AddSneakersModal = ({
         size: formData.size ? Number(formData.size) : undefined,
         year: formData.size ? Number(formData.year) : undefined,
       });
-      refetch();
       setFormData(initialFormState);
     }
   };
@@ -195,7 +198,7 @@ export const AddSneakersModal = ({
           </Box>
         </Header>
         <Box mt={6} component="form">
-          <Inputs onChange={handleChange} data={formData} />
+          <FormInputs onChange={handleChange} data={formData} />
           <Box mt={11}>
             <ButtonWithIcon
               startIcon={<PlusIcon />}
