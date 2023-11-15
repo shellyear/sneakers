@@ -1,16 +1,11 @@
 import { useState, ChangeEvent, SyntheticEvent } from "react";
+import { SneakerData } from "../../types";
 
-export type SneakerFormData = {
-  name: string;
-  brand: string;
-  price: string;
-  year: string;
-  size: string;
-  rating: number;
-};
+export const isValidFormData = (data: SneakerData): boolean =>
+  Object.values(data).every((value) => value !== "" && value !== 0);
 
-export const useSneakerForm = <SneakerFormData>(initial: SneakerFormData) => {
-  const [formData, setFormData] = useState<SneakerFormData>(initial);
+export const useSneakerForm = <SneakerData>(initial: SneakerData) => {
+  const [formData, setFormData] = useState<SneakerData>(initial);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

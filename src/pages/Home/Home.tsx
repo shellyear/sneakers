@@ -42,7 +42,7 @@ const Header = styled(Box)(({ theme }) => ({
 }));
 
 const FilterAndSearch = styled(Box)<{
-  space: boolean;
+  space: string;
 }>`
   display: flex;
   justify-content: end;
@@ -140,7 +140,7 @@ const Home = () => {
           </HeaderRight>
         </Header>
         {sneakersExist && isMd && (
-          <FilterAndSearch mt={6} space={!!searchTerm}>
+          <FilterAndSearch mt={6} space={searchTerm}>
             {searchTerm && (
               <SearchResults
                 searchTerm={searchTerm}

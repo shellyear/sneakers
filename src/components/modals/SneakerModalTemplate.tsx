@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent } from "react";
+import React, { ChangeEvent, FormEvent, SyntheticEvent } from "react";
 import {
   Box,
   InputLabel,
@@ -10,17 +10,9 @@ import {
 import { OutlinedInputCustom } from "../custom/OutlinedInputCustom";
 import { theme } from "../../static/styles/theme";
 import { ReactComponent as CloseIcon } from "../../static/images/close.svg";
+import { Sneaker, SneakerData } from "../../types";
 
-export type FormData = {
-  name: string;
-  brand: string;
-  price: string;
-  year: string;
-  size: string;
-  rating: number;
-};
-
-type FormInputsData = Omit<FormData, "rating">;
+type FormInputsData = Omit<Sneaker, "rating">;
 
 type SneakerModalTemplateProps = {
   open: boolean;
@@ -30,6 +22,7 @@ type SneakerModalTemplateProps = {
   onClose: () => void;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onRatingChange: (event: SyntheticEvent, newValue: number | null) => void;
+  onSubmit?: (e: FormEvent) => void;
 };
 
 type InputGroupProps = {
@@ -37,7 +30,7 @@ type InputGroupProps = {
   name: string;
   type?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
+  value?: string | number;
 };
 
 const ModalContainer = styled(Box)(({ theme }) => ({
@@ -102,22 +95,27 @@ const FormGroup = ({
   type = "text",
   value,
   onChange,
-}: InputGroupProps) => (
-  <Box mt={3}>
-    <Label htmlFor={id} variant="standard">
-      {name}
-    </Label>
-    <OutlinedInputCustom
-      id={id}
-      name={id}
-      value={value}
-      type={type}
-      onChange={onChange}
-      required
-      fullWidth
-    />
-  </Box>
-);
+}: InputGroupProps) => {
+  if (typeof value === "number" && value <= 0) {
+    value = "";
+  }
+  return (
+    <Box mt={3}>
+      <Label htmlFor={id} variant="standard">
+        {name}
+      </Label>
+      <OutlinedInputCustom
+        required
+        id={id}
+        name={id}
+        value={value}
+        type={type}
+        onChange={onChange}
+        fullWidth
+      />
+    </Box>
+  );
+};
 
 const FormInputs = ({
   onChange,
@@ -125,7 +123,7 @@ const FormInputs = ({
   data,
 }: {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  data: FormData;
+  data: SneakerData;
   onRatingChange: (e: SyntheticEvent, value: number | null) => void;
 }) => {
   return (
@@ -150,6 +148,7 @@ export const SneakerModalTemplate = ({
   onClose,
   onChange,
   onRatingChange,
+  onSubmit,
   formData,
   title,
   controls,
@@ -165,7 +164,7 @@ export const SneakerModalTemplate = ({
             <CloseIcon />
           </Box>
         </Box>
-        <Box mt={6} component="form">
+        <Box mt={6} component="form" onSubmit={onSubmit}>
           <FormInputs
             onRatingChange={onRatingChange}
             onChange={onChange}

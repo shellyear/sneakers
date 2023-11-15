@@ -65,15 +65,15 @@ export const UpdateSneakerModal = ({
     },
   });
 
-  const onSave = (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     updateSneaker(formData);
   };
 
   const onClose = () => {
     resetFormData();
-    handleClose()
-  }
+    handleClose();
+  };
 
   return (
     <SneakerModalTemplate
@@ -82,10 +82,11 @@ export const UpdateSneakerModal = ({
       onClose={onClose}
       onChange={handleChange}
       onRatingChange={handleRatingChange}
+      onSubmit={onSubmit}
       formData={formData}
       controls={
         <ButtonGroup mt={11}>
-          <SaveButton type="submit" variant="contained" onClick={onSave}>
+          <SaveButton type="submit" variant="contained">
             Save
           </SaveButton>
           <ButtonWithIcon

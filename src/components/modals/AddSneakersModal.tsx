@@ -2,10 +2,11 @@ import { Box } from "@mui/material";
 import { ButtonWithIcon } from "../custom/ButtonWithIcon";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sneakerApi } from "../../api";
-import { Sneaker } from "../../types";
+import { Sneaker, SneakerData } from "../../types";
 import { SneakerModalTemplate } from "./SneakerModalTemplate";
 import { ReactComponent as PlusIcon } from "../../static/images/plus.svg";
 import { useSneakerForm } from "./useSneakerForm";
+import { FormEvent } from "react";
 
 type AddSneakersModalProps = {
   open: boolean;
@@ -13,24 +14,13 @@ type AddSneakersModalProps = {
   initialFormState?: FormData;
 };
 
-type FormData = {
-  name: string;
-  brand: string;
-  price: string;
-  year: string;
-  size: string;
-  rating: number;
-};
-
-const isValidData = (data: FormData): boolean =>
-  Object.values(data).every((value) => value !== "");
-
 const initialFormData = {
+  _id: Math.random().toString(),
   name: "",
   brand: "",
-  price: "",
-  size: "",
-  year: "",
+  price: 0,
+  size: 0,
+  year: 0,
   rating: 0,
 };
 
@@ -40,9 +30,9 @@ export const AddSneakersModal = ({
 }: AddSneakersModalProps) => {
   const queryClient = useQueryClient();
   const { formData, setFormData, handleChange, handleRatingChange } =
-    useSneakerForm<FormData>(initialFormData);
+    useSneakerForm<SneakerData>(initialFormData);
 
-  const { mutate: addSneakers } = useMutation({
+  const { mutate: addSneaker } = useMutation({
     mutationKey: ["/add-sneakers"],
     mutationFn: (data: Partial<Sneaker>) => sneakerApi.addSneaker(data),
     onSuccess: () => {
@@ -59,16 +49,16 @@ export const AddSneakersModal = ({
     handleClose();
   };
 
-  const onSubmit = () => {
-    if (isValidData(formData)) {
-      addSneakers({
-        ...formData,
-        price: formData.price ? Number(formData.price) : undefined,
-        size: formData.size ? Number(formData.size) : undefined,
-        year: formData.size ? Number(formData.year) : undefined,
-      });
-      setFormData(initialFormData);
-    }
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const { _id, ...rest } = formData;
+    addSneaker({
+      ...rest,
+      price: rest.price ? Number(rest.price) : undefined,
+      size: rest.size ? Number(rest.size) : undefined,
+      year: rest.size ? Number(rest.year) : undefined,
+    });
+    setFormData(initialFormData);
   };
 
   return (
@@ -78,13 +68,13 @@ export const AddSneakersModal = ({
       onClose={onClose}
       onChange={handleChange}
       onRatingChange={handleRatingChange}
+      onSubmit={onSubmit}
       formData={formData}
       controls={
         <Box mt={11}>
           <ButtonWithIcon
             buttonType="submit"
             startIcon={<PlusIcon />}
-            onClick={onSubmit}
             text="Add new sneakers"
           />
         </Box>
