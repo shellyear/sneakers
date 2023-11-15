@@ -5,7 +5,7 @@ import { sneakerApi } from "../../api";
 import { Sneaker } from "../../types";
 import { SneakerModalTemplate } from "./SneakerModalTemplate";
 import { ReactComponent as PlusIcon } from "../../static/images/plus.svg";
-import { useForm } from "../../hooks";
+import { useSneakerForm } from "./useSneakerForm";
 
 type AddSneakersModalProps = {
   open: boolean;
@@ -19,6 +19,7 @@ type FormData = {
   price: string;
   year: string;
   size: string;
+  rating: number;
 };
 
 const isValidData = (data: FormData): boolean =>
@@ -30,6 +31,7 @@ const initialFormData = {
   price: "",
   size: "",
   year: "",
+  rating: 0,
 };
 
 export const AddSneakersModal = ({
@@ -37,8 +39,8 @@ export const AddSneakersModal = ({
   handleClose,
 }: AddSneakersModalProps) => {
   const queryClient = useQueryClient();
-  const { formData, setFormData, handleChange } =
-    useForm<FormData>(initialFormData);
+  const { formData, setFormData, handleChange, handleRatingChange } =
+    useSneakerForm<FormData>(initialFormData);
 
   const { mutate: addSneakers } = useMutation({
     mutationKey: ["/add-sneakers"],
@@ -48,8 +50,8 @@ export const AddSneakersModal = ({
       queryClient.invalidateQueries({ queryKey: ["get-sneakers"] });
     },
     onSettled: () => {
-      handleClose()
-    }
+      handleClose();
+    },
   });
 
   const onClose = () => {
@@ -75,6 +77,7 @@ export const AddSneakersModal = ({
       open={open}
       onClose={onClose}
       onChange={handleChange}
+      onRatingChange={handleRatingChange}
       formData={formData}
       controls={
         <Box mt={11}>

@@ -78,6 +78,7 @@ export const SneakerCard = ({ onClick, ...data }: SneakerCardProps) => {
               {data.brand}
             </Typography>
             <Rating
+              value={data.rating}
               sx={{
                 display: "flex",
                 marginTop: theme.spacing(1),

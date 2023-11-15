@@ -13,7 +13,7 @@ const Grid = styled("div")(({ theme }) => ({
   display: "grid",
   gap: theme.spacing(1),
   gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))",
-[theme.breakpoints.up("md")]: {
+  [theme.breakpoints.up("md")]: {
     gap: 20,
   },
 }));

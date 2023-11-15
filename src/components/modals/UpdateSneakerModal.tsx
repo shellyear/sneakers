@@ -1,12 +1,12 @@
 import { SneakerData } from "../../types";
 import { SneakerModalTemplate } from "./SneakerModalTemplate";
-import { useForm } from "../../hooks";
 import { Box, styled, Button, useTheme } from "@mui/material";
 import { ButtonWithIcon } from "../custom/ButtonWithIcon";
 import { ReactComponent as TrashIcon } from "../../static/images/trash.svg";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { sneakerApi } from "../../api";
 import { useRefetch } from "../../context";
+import { useSneakerForm } from "./useSneakerForm";
 
 type UpdateSneakerModalProps = {
   open: boolean;
@@ -39,15 +39,16 @@ export const UpdateSneakerModal = ({
   data,
 }: UpdateSneakerModalProps) => {
   const theme = useTheme();
-  const refetchSneakers = useRefetch()
+  const refetchSneakers = useRefetch();
   const queryClient = new QueryClient();
-  const { formData, handleChange } = useForm<SneakerData>(data);
+  const { formData, handleChange, handleRatingChange } =
+    useSneakerForm<SneakerData>(data);
 
   const { mutate: updateSneaker } = useMutation({
     mutationKey: ["/update-sneaker"],
     mutationFn: (data: SneakerData) => sneakerApi.updateSneaker(data),
     onSuccess: () => {
-      refetchSneakers()
+      refetchSneakers();
     },
   });
 
@@ -58,7 +59,7 @@ export const UpdateSneakerModal = ({
       queryClient.invalidateQueries({ queryKey: ["get-sneakers"] });
     },
     onSettled: () => {
-      refetchSneakers()
+      refetchSneakers();
       handleClose();
     },
   });
@@ -69,6 +70,7 @@ export const UpdateSneakerModal = ({
       open={open}
       onClose={handleClose}
       onChange={handleChange}
+      onRatingChange={handleRatingChange}
       formData={formData}
       controls={
         <ButtonGroup mt={11}>

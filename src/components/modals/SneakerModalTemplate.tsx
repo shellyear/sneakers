@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, SyntheticEvent } from "react";
 import {
   Box,
   InputLabel,
@@ -8,17 +8,19 @@ import {
   styled,
 } from "@mui/material";
 import { OutlinedInputCustom } from "../custom/OutlinedInputCustom";
-import { Sneaker } from "../../types";
 import { theme } from "../../static/styles/theme";
 import { ReactComponent as CloseIcon } from "../../static/images/close.svg";
 
-type FormData = {
+export type FormData = {
   name: string;
   brand: string;
   price: string;
   year: string;
   size: string;
+  rating: number;
 };
+
+type FormInputsData = Omit<FormData, "rating">;
 
 type SneakerModalTemplateProps = {
   open: boolean;
@@ -27,6 +29,7 @@ type SneakerModalTemplateProps = {
   controls: React.ReactNode;
   onClose: () => void;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onRatingChange: (event: SyntheticEvent, newValue: number | null) => void;
 };
 
 type InputGroupProps = {
@@ -60,10 +63,18 @@ const ModalContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const RatingGroup = () => (
+const RatingGroup = ({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (e: SyntheticEvent, value: number | null) => void;
+}) => (
   <Box mt={3}>
     <Label>Rate</Label>
     <Rating
+      value={value}
+      onChange={onChange}
       sx={{
         "& .MuiRating-icon": {
           color: theme.palette.primary.main,
@@ -110,10 +121,12 @@ const FormGroup = ({
 
 const FormInputs = ({
   onChange,
+  onRatingChange,
   data,
 }: {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   data: FormData;
+  onRatingChange: (e: SyntheticEvent, value: number | null) => void;
 }) => {
   return (
     <>
@@ -124,10 +137,10 @@ const FormInputs = ({
           name={input.name}
           type={input.type}
           onChange={onChange}
-          value={data && data[input.id as keyof Sneaker]}
+          value={data && data[input.id as keyof FormInputsData]}
         />
       ))}
-      <RatingGroup />
+      <RatingGroup value={data.rating} onChange={onRatingChange} />
     </>
   );
 };
@@ -136,6 +149,7 @@ export const SneakerModalTemplate = ({
   open,
   onClose,
   onChange,
+  onRatingChange,
   formData,
   title,
   controls,
@@ -152,7 +166,11 @@ export const SneakerModalTemplate = ({
           </Box>
         </Box>
         <Box mt={6} component="form">
-          <FormInputs onChange={onChange} data={formData} />
+          <FormInputs
+            onRatingChange={onRatingChange}
+            onChange={onChange}
+            data={formData}
+          />
           {controls}
         </Box>
       </ModalContainer>
