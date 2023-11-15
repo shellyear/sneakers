@@ -82,6 +82,7 @@ export const AddSneakersModal = ({
       controls={
         <Box mt={11}>
           <ButtonWithIcon
+            buttonType="submit"
             startIcon={<PlusIcon />}
             onClick={onSubmit}
             text="Add new sneakers"

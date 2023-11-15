@@ -7,6 +7,7 @@ import { QueryClient, useMutation } from "@tanstack/react-query";
 import { sneakerApi } from "../../api";
 import { useRefetch } from "../../context";
 import { useSneakerForm } from "./useSneakerForm";
+import { FormEvent } from "react";
 
 type UpdateSneakerModalProps = {
   open: boolean;
@@ -41,7 +42,7 @@ export const UpdateSneakerModal = ({
   const theme = useTheme();
   const refetchSneakers = useRefetch();
   const queryClient = new QueryClient();
-  const { formData, handleChange, handleRatingChange } =
+  const { formData, handleChange, handleRatingChange, resetFormData } =
     useSneakerForm<SneakerData>(data);
 
   const { mutate: updateSneaker } = useMutation({
@@ -64,20 +65,27 @@ export const UpdateSneakerModal = ({
     },
   });
 
+  const onSave = (e: FormEvent) => {
+    e.preventDefault();
+    updateSneaker(formData);
+  };
+
+  const onClose = () => {
+    resetFormData();
+    handleClose()
+  }
+
   return (
     <SneakerModalTemplate
       title={data.name}
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       onChange={handleChange}
       onRatingChange={handleRatingChange}
       formData={formData}
       controls={
         <ButtonGroup mt={11}>
-          <SaveButton
-            variant="contained"
-            onClick={() => updateSneaker(formData)}
-          >
+          <SaveButton type="submit" variant="contained" onClick={onSave}>
             Save
           </SaveButton>
           <ButtonWithIcon

@@ -32,10 +32,15 @@ export const useSneakerForm = <SneakerFormData>(initial: SneakerFormData) => {
     }
   };
 
+  const resetFormData = () => {
+    setFormData(initial);
+  };
+
   return {
     formData,
     setFormData,
     handleChange,
     handleRatingChange,
+    resetFormData,
   };
 };

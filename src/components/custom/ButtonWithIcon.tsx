@@ -13,6 +13,7 @@ const StyledButton = styled(Button)<{
 
 interface ButtonWithIconProps extends ButtonProps {
   text: string;
+  buttonType?: "submit" | "reset" | "button"
   onClick?: () => void;
   background?: string;
   height?: number;
@@ -24,9 +25,11 @@ export const ButtonWithIcon = ({
   onClick,
   background,
   height,
+  buttonType = "button"
 }: ButtonWithIconProps) => {
   return (
     <StyledButton
+      type={buttonType}
       variant="contained"
       size="large"
       startIcon={startIcon}
