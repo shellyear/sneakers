@@ -1,4 +1,10 @@
-import { Box, Typography, styled } from "@mui/material";
+import {
+  Box,
+  Typography,
+  styled,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { ReactComponent as NoSortedSneakersSvg } from "../../static/images/sorted-not-found.svg";
 
 const ImgBox = styled(Box)`
@@ -12,9 +18,11 @@ const Text = styled(Typography)`
 `;
 
 export const NoSortedSneakerNotice = () => {
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up("md"));
   return (
     <div>
-      <ImgBox mt={15}>
+      <ImgBox mt={isMd ? 15 : 8}>
         <NoSortedSneakersSvg width="100%" />
       </ImgBox>
       <Box mt={6}>

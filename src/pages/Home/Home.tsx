@@ -151,6 +151,7 @@ const Home = () => {
           </FilterAndSearch>
         )}
         <Content
+          hasSearchTerm={Boolean(searchTerm)}
           isMd={isMd}
           hasSneakers={sneakersExist}
           sortedSneakers={sortedSneakers}

@@ -5,15 +5,23 @@ import { Box } from "@mui/material";
 import { NoSneakerNotice } from "../../components/notice/NoSneakerNotice";
 
 type ContentProps = {
+  hasSearchTerm: boolean;
   hasSneakers?: boolean;
   sortedSneakers?: SneakerData[];
   isMd: boolean;
 };
 
-export const Content = ({ hasSneakers, sortedSneakers, isMd }: ContentProps) => {
+export const Content = ({
+  hasSearchTerm,
+  hasSneakers,
+  sortedSneakers,
+  isMd,
+}: ContentProps) => {
   const sortedSneakersExist = sortedSneakers && sortedSneakers.length > 0;
 
-  if (hasSneakers && !sortedSneakersExist) return <NoSortedSneakerNotice />;
+  if (hasSearchTerm && hasSneakers && !sortedSneakersExist) {
+    return <NoSortedSneakerNotice />;
+  }
 
   if (sortedSneakersExist) {
     return (
