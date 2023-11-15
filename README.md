@@ -7,5 +7,7 @@ api url can be found on https://crudcrud.com
 
 
 ### `npm start`
+to start an app
 
-### `npm run build`
+### `npm run deploy`
+to deploy an app to github pages
