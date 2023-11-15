@@ -22,10 +22,10 @@ declare module "@mui/material/styles/createPalette" {
 const breakpoints = {
   values: {
     xs: 0,
-    sm: 600,
+    sm: 576,
     md: 900,
     lg: 1200,
-    xl: 1312,
+    xl: 1356,
   },
 };
 
@@ -60,17 +60,17 @@ export const theme = createTheme({
   },
   typography: {
     h1: {
-      fontFamily: "Arial, sans-serif, serif",
+      fontFamily: "Boxing, sans-serif, serif",
       fontSize: 64,
-      fontWeight: 900,
+      fontWeight: 400,
     },
     h2: {
-      fontFamily: "Arial, sans-serif, serif",
+      fontFamily: "Boxing, sans-serif, serif",
       fontSize: 36,
-      fontWeight: 900,
+      fontWeight: 400,
     },
     h3: {
-      fontFamily: "Arial, sans-serif, serif",
+      fontFamily: "Excon, sans-serif, serif",
       fontSize: 24,
       fontWeight: 700,
     },
@@ -79,11 +79,16 @@ export const theme = createTheme({
       fontSize: 16,
       fontWeight: 700,
     },
+    subtitle2: {
+      fontFamily: "Excon, sans-serif, serif",
+      fontSize: 14,
+      fontWeight: 700,
+    },
     button: {
       fontFamily: "Excon, sans-serif, serif",
       fontSize: 16,
       fontWeight: 500,
-      textTransform: 'none'
+      textTransform: "none",
     },
     body1: {
       fontFamily: "Excon, sans-serif, serif",

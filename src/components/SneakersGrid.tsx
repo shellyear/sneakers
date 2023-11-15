@@ -12,8 +12,8 @@ type SneakersGridProps = {
 const Grid = styled("div")(({ theme }) => ({
   display: "grid",
   gap: theme.spacing(1),
-  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-  [theme.breakpoints.up("md")]: {
+  gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))",
+[theme.breakpoints.up("md")]: {
     gap: 20,
   },
 }));
