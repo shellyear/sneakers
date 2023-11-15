@@ -1,14 +1,12 @@
 import {
   Container as BaseContainer,
   Typography,
-  Theme,
   Box,
   useMediaQuery,
   styled,
 } from "@mui/material";
 import { theme } from "../../static/styles/theme";
-
-import { SearchBar } from "../../components/SearchBar";
+import { SearchBar, useSearchBar } from "../../components/SearchBar";
 import { ReactComponent as PlusIcon } from "../../static/images/plus.svg";
 import { ButtonWithIcon } from "../../components/custom/ButtonWithIcon";
 import { AddSneakersModal } from "../../components/modals/AddSneakersModal";
@@ -21,21 +19,19 @@ import {
 import { Slider } from "../../components/Slider";
 import { sneakerApi } from "../../api";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { SneakerData } from "../../types";
 import { Content } from "./Content";
 import { Controls } from "./Controls";
 import { RefetchContext } from "../../context";
 
-const Container = styled(BaseContainer)<{ theme: Theme }>(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
+const Container = styled(BaseContainer)(({ theme }) => ({
+  boxSizing: 'content-box',
   minHeight: "100vh",
+  width: "100%",
   padding: "84px 22px 56px 22px",
   [theme.breakpoints.up("md")]: {
-    padding: "56px 50px", // padding for medium screens
-  },
-  [theme.breakpoints.up("lg")]: {
-    padding: "56px 100px", // padding for larger screens
+    padding: "56px 0", // padding for medium and bigger screens
   },
 }));
 
@@ -68,8 +64,7 @@ const Home = () => {
   const { filter, newestFirst, cheapestFirst, smallestFirst, onFilterClick } =
     useSneakerFilters();
   const { open, closeModal, openModal } = useModal();
-  const [sortedSneakers, setSortedSneakers] = useState<SneakerData[]>();
-
+  const { searchTerm, onSearchChange, filterBySearch } = useSearchBar()
   const { data, refetch } = useQuery({
     queryKey: ["get-sneakers"],
     queryFn: () => sneakerApi.getSneakers(),
@@ -77,21 +72,30 @@ const Home = () => {
 
   const sneakersExist = data && data.length > 0;
 
-  useEffect(() => {
+  let sortedSneakers = useMemo(() => {
     if (data) {
-      if (filter === FiltersEnum.ALL) setSortedSneakers(data);
-      if (filter === FiltersEnum.NEW) setSortedSneakers(newestFirst(data));
-      if (filter === FiltersEnum.CHEAPEST)
-        setSortedSneakers(cheapestFirst(data));
-      if (filter === FiltersEnum.SMALLEST)
-        setSortedSneakers(smallestFirst(data));
+      const sortFunctions = {
+        [FiltersEnum.ALL]: (data: SneakerData[]) => data,
+      [FiltersEnum.NEW]: newestFirst,
+        [FiltersEnum.CHEAPEST]: cheapestFirst,
+        [FiltersEnum.SMALLEST]: smallestFirst,
+      };
+
+      return sortFunctions[filter] ? sortFunctions[filter](data) : data;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, data]);
+  }, [data, filter]);
+
+  sortedSneakers = useMemo(() => {
+    if (sortedSneakers) {
+      return filterBySearch(sortedSneakers, searchTerm)
+    }
+    return sortedSneakers
+  }, [filterBySearch, searchTerm, sortedSneakers])
 
   return (
     <RefetchContext.Provider value={{ refetch }}>
-      <Container theme={theme} maxWidth="xl">
+      <Container maxWidth="xl">
         <Header>
           <Title variant="h2">Your collection</Title>
           {sneakersExist && !isMd && (
@@ -103,7 +107,7 @@ const Home = () => {
           )}
           <HeaderRight>
             <Box flex={1}>
-              <SearchBar />
+              <SearchBar searchTerm={searchTerm} onChange={onSearchChange} />
             </Box>
             {isMd && (
               <Box flex={1}>

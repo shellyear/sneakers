@@ -3,7 +3,7 @@ import { Sneaker, SneakerData } from "../types";
 
 export const BASE_URL =
   process.env.API_URL ||
-  "https://crudcrud.com/api/fd76a775fcc64c2581a50c1133ac053c";
+  "https://crudcrud.com/api/dbcf7e43fe6848a0925641b9b5aa1d6f";
 
 const api = axios.create({
   baseURL: BASE_URL,
