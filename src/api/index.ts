@@ -1,10 +1,7 @@
 import axios from "axios";
 import { Sneaker, SneakerData } from "../types";
 
-export const BASE_URL =
-  process.env.API_URL ||
-  "https://crudcrud.com/api/b7d3804f7f6b47f0922a80343d8cb7d9";
-
+export const BASE_URL = process.env.REACT_APP_API_URL;
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {

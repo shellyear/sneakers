@@ -14,18 +14,18 @@ const Text = styled(Typography)`
 `;
 
 export const NoSneakerNotice = () => {
-  const isMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
     <div>
       <ImgBox mt={15}>
-        {isMd ? (
+        {isSm ? (
           <SneakersWithoutTextSvg width="100%" />
         ) : (
           <SneakersWithTextSvg width="100%" />
         )}
       </ImgBox>
-      {isMd && (
+      {isSm && (
         <Text mt={6} variant="body1" as="div">
           <pre>
             {
