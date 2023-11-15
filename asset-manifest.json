@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/sneakers%20/static/css/main.137497ee.css",
+    "main.js": "/sneakers%20/static/js/main.0a52b9fe.js",
+    "static/js/787.35817a84.chunk.js": "/sneakers%20/static/js/787.35817a84.chunk.js",
+    "static/media/stonks.svg": "/sneakers%20/static/media/stonks.1119906cb35aeebb849136d61420befa.svg",
+    "static/media/Excon-Regular.ttf": "/sneakers%20/static/media/Excon-Regular.98261c61a426286a348e.ttf",
+    "static/media/Excon-Medium.ttf": "/sneakers%20/static/media/Excon-Medium.2a4842a3c1c08e28ae4b.ttf",
+    "static/media/Excon-Bold.ttf": "/sneakers%20/static/media/Excon-Bold.2ead06daf6bade9d9463.ttf",
+    "static/media/Excon-Thin.ttf": "/sneakers%20/static/media/Excon-Thin.1a83b26a49e2ba56de78.ttf",
+    "static/media/Boxing-Regular.otf": "/sneakers%20/static/media/Boxing-Regular.345a2824373937e993e2.otf",
+    "static/media/girlSneakerWithoutText.svg": "/sneakers%20/static/media/girlSneakerWithoutText.db84169928cca94451798ee774e86702.svg",
+    "static/media/sorted-not-found.svg": "/sneakers%20/static/media/sorted-not-found.10fab9abc6d12d9cb92e5df720b845af.svg",
+    "static/media/dollar-sign.svg": "/sneakers%20/static/media/dollar-sign.146ae9274d630068f8df0a029b101325.svg",
+    "static/media/trash.svg": "/sneakers%20/static/media/trash.c0a3a6f9f13e1af4ba6b83a7289e1739.svg",
+    "static/media/calendar.svg": "/sneakers%20/static/media/calendar.5cc278d670ecce6e4fc7baf5e694e2fd.svg",
+    "static/media/size.svg": "/sneakers%20/static/media/size.a843aff97fc1c437432cabccebecabad.svg",
+    "static/media/search.svg": "/sneakers%20/static/media/search.9cb29b67f1e70493b119fdc6ba69eab6.svg",
+    "static/media/close.svg": "/sneakers%20/static/media/close.6bbd4f82e201636175cba4099fc19a7f.svg",
+    "index.html": "/sneakers%20/index.html",
+    "static/media/plus.svg": "/sneakers%20/static/media/plus.f084cc7c1c9ec14dcbdf8bcb9ca57739.svg",
+    "main.137497ee.css.map": "/sneakers%20/static/css/main.137497ee.css.map",
+    "main.0a52b9fe.js.map": "/sneakers%20/static/js/main.0a52b9fe.js.map",
+    "787.35817a84.chunk.js.map": "/sneakers%20/static/js/787.35817a84.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.137497ee.css",
+    "static/js/main.0a52b9fe.js"
+  ]
+}
